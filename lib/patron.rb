@@ -8,6 +8,9 @@ require_relative "patron/retiree"
 require_relative "patron/student"
 require_relative "patron/ann_arbor_student"
 require_relative "patron/regional_student"
+require_relative "patron/flint_student"
+require_relative "patron/dearborn_student"
+
 require_relative "patron/name"
 
 class Patron
@@ -25,9 +28,9 @@ class Patron
       when "UMAA"
         AnnArborStudent.new(data: data)
       when "UMDB"
-        RegionalStudent.new(data: data)
+        DearbornStudent.new(data: data)
       when "UMFL"
-        RegionalStudent.new(data: data)
+        FlintStudent.new(data: data)
       end
     when "faculty"
       Faculty.new(data: data)
