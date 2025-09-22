@@ -50,9 +50,9 @@ class Patron
 
   def self.valid_for(data)
     inst_roles = inst_roles_for(data)
-    inst_roles.select do |inst_role|
+    inst_roles.each do |inst_role|
       user = for_inst_role(inst_role: inst_role, data: data)
-      user if user.includable?
+      return user if user.includable?
     end
   end
 
@@ -65,7 +65,7 @@ class Patron
   end
 
   def self.for_inst_role(inst_role:, data:)
-    case inst_role
+    case inst_role["role"]
     when "student"
       case inst_role["campus"]
       when "UMAA"
