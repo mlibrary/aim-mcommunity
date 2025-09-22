@@ -60,7 +60,7 @@ class Patron
     inst_roles = inst_roles_for(data)
     inst_roles.map do |inst_role|
       user = for_inst_role(inst_role: inst_role, data: data)
-      "Inst Role: #{inst_role["key"]}\tExclude Reason: #{user.exclude_reason}"
+      "Uniqname: #{user.primary_id}\tInst Role: #{inst_role["key"]}\tExclude Reason: #{user.exclude_reason}"
     end
   end
 
