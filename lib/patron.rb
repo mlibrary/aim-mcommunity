@@ -50,10 +50,10 @@ class Patron
 
   def self.valid_for(data)
     inst_roles = inst_roles_for(data)
-    inst_roles.each do |inst_role|
+    inst_roles.filter_map do |inst_role|
       user = for_inst_role(inst_role: inst_role, data: data)
-      return user if user.includable?
-    end
+      user if user.includable?
+    end&.first
   end
 
   def self.exclude_reasons_for(data)
