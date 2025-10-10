@@ -5,6 +5,7 @@ require "date"
 require "byebug"
 require "csv"
 
+require_relative "services"
 require_relative "patron"
 require_relative "patron_mapper"
 require_relative "current_schedule"
@@ -57,16 +58,17 @@ class ProcessLdap
     end
   end
 
-  DISTINGUISHED_NAME = ENV.fetch("LDAP_DN")
-  PASSWORD = ENV.fetch("LDAP_PASSWORD")
-  HOST = ENV.fetch("LDAP_HOST")
+  # DISTINGUISHED_NAME = ENV.fetch("LDAP_DN")
+  # PASSWORD = ENV.fetch("LDAP_PASSWORD")
+  # HOST = ENV.fetch("LDAP_HOST")
 
   def initialize(output: $stdout)
     @output = output
   end
 
   def ldap
-    @ldap ||= Net::LDAP.new(host: HOST, auth: {method: :simple, dn: DISTINGUISHED_NAME, password: PASSWORD}, port: 636, encryption: {method: :simple_tls})
+    S.ldap
+    # @ldap ||= Net::LDAP.new(host: HOST, auth: {method: :simple, dn: DISTINGUISHED_NAME, password: PASSWORD}, port: 636, encryption: {method: :simple_tls})
   end
 
   def filter
@@ -97,13 +99,18 @@ class ProcessLdap
     ) do |data|
       puts data["uid"].first
       total_found += 1
-      patron = Patron.for(data)
-      if patron.includable?
+      patron = Patron.valid_for(data)
+      if patron
         @output.write PatronMapper::User.from_hash(patron.to_h).to_xml(pretty: true)
-        total_loaded += 1
       else
-        puts "#{patron.primary_id}\t#{patron.class}\t#{patron.exclude_reason}"
+        puts Patron.exclude_reasons_for(data)
       end
+      # if patron.includable?
+      # @output.write PatronMapper::User.from_hash(patron.to_h).to_xml(pretty: true)
+      # total_loaded += 1
+      # else
+      # puts "#{patron.primary_id}\t#{patron.class}\t#{patron.exclude_reason}"
+      # end
     end
     unless ldap.get_operation_result.code == 0
       puts "Response Code: #{ldap.get_operation_result.code}, Message: #{ldap.get_operation_result.message}"
