@@ -47,6 +47,7 @@ describe Patron::FlintStudent do
       allow(@current_schedule_double).to receive(:includable_term?) do |termcode|
         termcode == "W22" # this the registered one
       end
+      @patron["umichflnttermstatus"][0].sub!("registered=N", "registered=Y")
       @patron["umichflntcurrenttermstatus"] = []
 
       expect(subject.includable?).to eq(true)

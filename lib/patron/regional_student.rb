@@ -69,11 +69,9 @@ class Patron
 
     def current_term_status
       @current_term_status ||= begin
-        if !@data["umich#{ldap_campus}currenttermstatus"].empty?
-          return ldap_fields(@data["umich#{ldap_campus}currenttermstatus"]).first
-        end
+        terms = (@data["umich#{ldap_campus}currenttermstatus"] || []) + @data["umich#{ldap_campus}termstatus"]
 
-        ldap_fields(@data["umich#{ldap_campus}termstatus"])
+        ldap_fields(terms)
           .select { |x| x.registered == "Y" }
           .sort_by { |x| x.academicPeriod }
           .rfind do |t|
