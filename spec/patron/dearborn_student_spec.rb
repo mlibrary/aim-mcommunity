@@ -53,6 +53,13 @@ describe Patron::DearbornStudent do
       end
       expect(subject.includable?).to eq(false)
     end
+    it "is true when currenttermstatus is unregistered but termstatus does contain a valid registered term" do
+      @patron["umichdbrntermstatus"][3].sub!("registered=N", "registered=Y")
+      allow(@current_schedule_double).to receive(:includable_term?) do |termcode|
+        termcode == "F22" # this is a registered term that's in termstatus but not currentermstatus
+      end
+      expect(subject.includable?).to eq(true)
+    end
   end
   context "#exclude_reason" do
     it "is nil when there is a registered for a current term" do

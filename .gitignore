@@ -5,6 +5,7 @@ coverage
 .byebug_history
 .bash_history
 .irb_history
+.local
 output/*.xml
 output/*.tsv
 output/*.zip
