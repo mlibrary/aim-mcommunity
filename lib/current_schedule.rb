@@ -69,7 +69,7 @@ class CurrentSchedule
     end
   end
 
-  # last sunday in August
+  # last Sunday in August
   def august_expiry_date(year)
     first = Date.new(year, 8)
     offset = SUNDAY_OFFSET[first.wday]
@@ -78,35 +78,37 @@ class CurrentSchedule
     fourth_sunday
   end
 
-  # first sunday in August
+  # Having the second Sunday instead of the first avoids problems with things
+  # being due on days when the University if closed for the Holidays.
+  # second Sunday in January
   def january_expiry_date(year)
     first = Date.new(year)
     offset = SUNDAY_OFFSET[first.wday]
-    Date.new(year, 1, 1 + offset)
+    Date.new(year, 1, 8 + offset)
   end
 
-  # first sunday in May
+  # first Sunday in May
   def may_expiry_date(year)
     first = Date.new(year, 5)
     offset = SUNDAY_OFFSET[first.wday]
     Date.new(year, 5, 1 + offset)
   end
 
-  # second friday in december
+  # second Friday in December
   def december_update_date(year)
     first = Date.new(year, 12)
     offset = FRIDAY_OFFSET[first.wday]
     Date.new(year, 12, 8 + offset)
   end
 
-  # first friday in April
+  # first Friday in April
   def april_update_date(year)
     first = Date.new(year, 4)
     offset = FRIDAY_OFFSET[first.wday]
     Date.new(year, 4, 1 + offset)
   end
 
-  # first friday in August
+  # first Friday in August
   def august_update_date(year)
     first = Date.new(year, 8)
     offset = FRIDAY_OFFSET[first.wday]

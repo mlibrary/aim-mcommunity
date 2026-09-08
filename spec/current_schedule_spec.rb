@@ -26,11 +26,11 @@ describe CurrentSchedule do
   end
   context "#expiry_date" do
     it "works for a basic example" do
-      expect_expiry_date("2025-11-26", "2026-01-04")
+      expect_expiry_date("2025-11-26", "2026-01-11")
     end
     it "handles May expiry dates" do
-      expect_expiry_date("2025-12-11", "2026-01-04")
-      # December update dates should be First Sunday in May
+      expect_expiry_date("2025-12-11", "2026-01-11")
+      # December update dates should return first Sunday in May
       expect_expiry_date("2025-12-12", "2026-05-03")
       expect_expiry_date("2026-12-11", "2027-05-02")
     end
@@ -43,9 +43,9 @@ describe CurrentSchedule do
     end
 
     it "handles Jaunary expiry dates" do
-      # August update dates should return first Sunday in Jaunary of next year
-      expect_expiry_date("2025-08-01", "2026-01-04")
-      expect_expiry_date("2026-08-07", "2027-01-03")
+      # August update dates should return second Sunday in Jaunary of next year
+      expect_expiry_date("2025-08-01", "2026-01-11")
+      expect_expiry_date("2026-08-07", "2027-01-10")
     end
   end
   context "#update_date" do
